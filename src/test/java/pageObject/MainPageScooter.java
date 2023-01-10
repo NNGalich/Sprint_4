@@ -10,6 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class MainPageScooter {
     private WebDriver driver;
 
+    //Кнопка "да все привыкли" про куки
+    private By acceptCookieButton = By.cssSelector(".App_CookieButton__3cvqF");
+
     //Верхняя кнопка для заказа
     private By upperOrderButton = By.cssSelector(".Header_Nav__AGCXC>.Button_Button__ra12g");
 
@@ -26,12 +29,40 @@ public class MainPageScooter {
         this.driver = driver;
     }
 
-    public void clickUpperOrderButton() {
+    public void clickAcceptCookie() {
+        driver.findElement(acceptCookieButton).click();
+    }
+
+    private void clickUpperOrderButton() {
         driver.findElement(upperOrderButton).click();
     }
 
-    public void clickLowerOrderButton() {
+    private void scrollToUpperOrderButton() {
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", driver.findElement(upperOrderButton));
+    }
+
+    private void clickLowerOrderButton() {
         driver.findElement(lowerOrderButton).click();
+    }
+
+    private void scrollToLowerOrderButton() {
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", driver.findElement(upperOrderButton));
+    }
+
+    public void scrollToOrderButtonByName(String name) {
+        if (name.equals("upper")) {
+            scrollToUpperOrderButton();
+        } else if (name.equals("lower")) {
+            scrollToLowerOrderButton();
+        }
+    }
+
+    public void clickOrderButtonByName(String name) {
+        if (name.equals("upper")) {
+            clickUpperOrderButton();
+        } else if (name.equals("lower")) {
+            clickLowerOrderButton();
+        }
     }
 
     public void clickFaqQuestionByIndex(int index) {

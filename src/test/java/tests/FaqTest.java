@@ -2,6 +2,7 @@ package tests;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -13,9 +14,15 @@ import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Parameterized.class)
 public class FaqTest {
+    //Индекс вопроса
     private final int index;
+    //Ожидаемый текст ответа
     private final String expectedText;
+
+    //Браузер
     private WebDriver driver;
+    //page object для главной страницы
+    private MainPageScooter objMainPage;
 
     public FaqTest(int index, String expectedText) {
         this.index = index;
@@ -36,13 +43,19 @@ public class FaqTest {
         };
     }
 
-    @Test
-    public void checkAnswerText() {
+    @Before
+    public void setUp() {
         driver = new ChromeDriver();
         driver.get("https://qa-scooter.praktikum-services.ru/");
 
         //Создал обьект главной страницы
-        MainPageScooter objMainPage = new MainPageScooter(driver);
+        objMainPage = new MainPageScooter(driver);
+    }
+
+    @Test
+    public void checkAnswerText() {
+        //Принимаем плашку accept cookie, чтобы плашка не мешалась
+        objMainPage.clickAcceptCookie();
 
         //Прокрутка экрана до раздела с вопросом
         objMainPage.scrollToFaqQuestionByIndex(index);
